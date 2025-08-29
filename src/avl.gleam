@@ -1,7 +1,6 @@
 import gleam/order
 import gleam/list
 import gleam/int
-import gleeunit
 
 pub type Tree(a) {
   Node(a, left: Tree(a), right: Tree(a), height: Int)
