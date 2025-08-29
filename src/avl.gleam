@@ -1,6 +1,6 @@
-import gleam/order
-import gleam/list
 import gleam/int
+import gleam/list
+import gleam/order
 
 pub type Tree(a) {
   Node(a, left: Tree(a), right: Tree(a), height: Int)
@@ -36,7 +36,7 @@ fn rotate_right(y: Tree(a)) -> Tree(a) {
   case y {
     Node(yv, yl, yr, _) ->
       case yl {
-        Nil -> y 
+        Nil -> y
         Node(xv, xl, xr, _) -> {
           let y_prime = mk_node(yv, xr, yr)
           mk_node(xv, xl, y_prime)
@@ -50,7 +50,7 @@ fn rotate_left(x: Tree(a)) -> Tree(a) {
   case x {
     Node(xv, xl, xr, _) ->
       case xr {
-        Nil -> x 
+        Nil -> x
         Node(yv, yl, yr, _) -> {
           let x_prime = mk_node(xv, xl, yl)
           mk_node(yv, x_prime, yr)
@@ -66,22 +66,21 @@ fn rebalance(value: a, left: Tree(a), right: Tree(a)) -> Tree(a) {
 
   case bf > 1 {
     True -> {
-      let left2 =
-        case left {
-          Nil -> left
-          _ ->
-            case balance_factor(left) < 0 {
-              True -> rotate_left(left)
-              False -> left
-            }
-        }
+      let left2 = case left {
+        Nil -> left
+        _ ->
+          case balance_factor(left) < 0 {
+            True -> rotate_left(left)
+            False -> left
+          }
+      }
       rotate_right(mk_node(value, left2, right))
     }
-    
-    False -> case bf < -1 {
-      True -> {
-        let right2 =
-          case right {
+
+    False ->
+      case bf < -1 {
+        True -> {
+          let right2 = case right {
             Nil -> right
             _ ->
               case balance_factor(right) > 0 {
@@ -89,10 +88,10 @@ fn rebalance(value: a, left: Tree(a), right: Tree(a)) -> Tree(a) {
                 False -> right
               }
           }
-        rotate_left(mk_node(value, left, right2))
+          rotate_left(mk_node(value, left, right2))
+        }
+        False -> node
       }
-      False -> node
-    }
   }
 }
 
@@ -119,11 +118,7 @@ pub fn insert(
   }
 }
 
-pub fn find(
-  tree: Tree(a),
-  value: a,
-  compare: fn(a, a) -> order.Order,
-) -> Bool {
+pub fn find(tree: Tree(a), value: a, compare: fn(a, a) -> order.Order) -> Bool {
   case tree {
     Nil -> False
     Node(x, l, r, _) ->
@@ -139,7 +134,8 @@ pub fn transform(
   xs: List(a),
   compare: fn(a, a) -> order.Order,
 ) -> #(Tree(a), Bool) {
-  let tree = list.fold(xs, empty(), fn(acc, elem) { insert(acc, elem, compare) })
+  let tree =
+    list.fold(xs, empty(), fn(acc, elem) { insert(acc, elem, compare) })
   #(tree, verify(xs, tree, compare))
 }
 

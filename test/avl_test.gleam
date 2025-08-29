@@ -1,7 +1,7 @@
+import avl
+import gleam/int
 import gleeunit
 import gleeunit/should
-import gleam/int
-import avl
 
 pub fn main() -> Nil {
   gleeunit.main()
@@ -16,7 +16,7 @@ fn sorted(xs: List(Int)) -> Bool {
 }
 
 pub fn inserts_balance_ll_tesr() {
-  let inputs = [30, 20, 10] 
+  let inputs = [30, 20, 10]
   let #(tree, ok) = avl.transform(inputs, int.compare)
   should.be_true(ok)
   should.be_true(avl.is_avl(tree))
@@ -40,7 +40,7 @@ pub fn inserts_balance_lr_test() {
 }
 
 pub fn inserts_balance_rl_test() {
-  let inputs = [10, 30, 20] 
+  let inputs = [10, 30, 20]
   let #(tree, ok) = avl.transform(inputs, int.compare)
   should.be_true(ok)
   should.be_true(avl.is_avl(tree))
